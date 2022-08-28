@@ -4,12 +4,9 @@
 
       <!-- Brand logo-->
       <b-link class="brand-logo">
-        <b-img
-          :src="logoUrl"
-          width="100"
-          height="50"
-          alt="logo"
-        />
+        <h2 class="brand-text text-primary ml-1">
+          {{ $t('Brand') }}
+        </h2>
       </b-link>
       <!-- /Brand logo-->
 
@@ -185,69 +182,6 @@
                 </validation-provider>
               </b-form-group>
 
-              <b-row>
-                <b-col md="6">
-                  <b-form-group
-                    :label="$t('First Name')"
-                    label-for="mc-first-name"
-                  >
-                    <validation-provider
-                      #default="{ errors }"
-                      name="First Name"
-                      rules="required"
-                    >
-                      <b-form-input
-                        id="mc-first-name"
-                        v-model="firstName"
-                        :state="errors.length > 0 ? false:null"
-                        placeholder="First Name"
-                      />
-                      <small class="text-danger">{{ errors[0] }}</small>
-                    </validation-provider>
-                  </b-form-group>
-                </b-col>
-                <b-col md="6">
-                  <b-form-group
-                    :label="$t('Last Name')"
-                    label-for="mc-last-name"
-                  >
-                    <validation-provider
-                      #default="{ errors }"
-                      name="Last Name"
-                      rules="required"
-                    >
-                      <b-form-input
-                        id="mc-last-name"
-                        v-model="lastName"
-                        :state="errors.length > 0 ? false:null"
-                        placeholder="Last Name"
-                      />
-                      <small class="text-danger">{{ errors[0] }}</small>
-                    </validation-provider>
-                  </b-form-group>
-                </b-col>
-              </b-row>
-
-              <b-form-group
-                :label="$t('Phone Number')"
-                label-for="phone"
-              >
-                <b-input-group>
-                  <b-input-group-prepend is-text>
-                    NZ (+64)
-                  </b-input-group-prepend>
-                  <cleave
-                    id="phone"
-                    v-model="phone"
-                    class="form-control"
-                    :raw="false"
-                    :options="options.phone"
-                    placeholder="02x xxx xxxxx"
-                  />
-                </b-input-group>
-
-              </b-form-group>
-
               <b-form-group>
                 <ValidationProvider
                   #default="{ errors }"
@@ -298,9 +232,8 @@
 import { ValidationProvider, ValidationObserver } from 'vee-validate'
 import {
   BDropdown, BDropdownItem,
-  BRow, BCol, BLink, BButton, BForm, BFormCheckbox, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BInputGroupPrepend, BImg, BCardTitle,
+  BRow, BCol, BLink, BButton, BForm, BFormCheckbox, BFormGroup, BFormInput, BInputGroup, BInputGroupAppend, BImg, BCardTitle,
 } from 'bootstrap-vue'
-import Cleave from 'vue-cleave-component'
 // eslint-disable-next-line import/no-extraneous-dependencies
 import 'cleave.js/dist/addons/cleave-phone.nz'
 import { required, email } from '@validations'
@@ -313,7 +246,6 @@ export default {
   components: {
     BDropdown,
     BDropdownItem,
-    Cleave,
     BRow,
     BImg,
     BCol,
@@ -326,7 +258,6 @@ export default {
     BFormInput,
     BInputGroup,
     BInputGroupAppend,
-    BInputGroupPrepend,
     // validations
     ValidationProvider,
     ValidationObserver,
@@ -338,7 +269,6 @@ export default {
   mixins: [togglePasswordVisibility],
   data() {
     return {
-      logoUrl: null,
       status: false,
       username: '',
       userEmail: '',
@@ -353,19 +283,14 @@ export default {
       email,
       locales: [
         {
-          locale: 'en',
-          img: require('@/assets/images/flags/en.png'),
-          name: 'English',
-        },
-        {
-          locale: 'ko',
-          img: require('@/assets/images/flags/ko.png'),
-          name: 'Korean',
-        },
-        {
           locale: 'zh_CN',
           img: require('@/assets/images/flags/cn.png'),
           name: 'China',
+        },
+        {
+          locale: 'en',
+          img: require('@/assets/images/flags/en.png'),
+          name: 'English',
         },
       ],
       options: {
@@ -402,7 +327,6 @@ export default {
     // console.log(this.$i18n)
   },
   created() {
-    this.getLogo()
   },
   methods: {
     ChangeLanguage(localeObj) {
@@ -410,29 +334,16 @@ export default {
       this.$i18n.locale = localeObj.locale
       localStorage.setItem('language', localeObj.locale)
     },
-    async getLogo() {
-      if (this.$store.state.ship2u.company) {
-        this.company = this.$store.state.ship2u.company
-      } else {
-        this.company = await store.dispatch('ship2u/company')
-      }
-      if (this.company) {
-        this.logoUrl = store.state.ship2u.apiHost + this.company.logo
-      } else {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.logoUrl = require('@/assets/images/logo/logo.png')
-      }
-    },
     register() {
       console.log(this.$i18n.locale)
       this.$refs.registerForm.validate().then(success => {
         if (success) {
-          const tel = this.phone.replace(/\s*/g, '')
+          // const tel = this.phone.replace(/\s*/g, '')
           store.dispatch('ship2u/register', {
-            email: this.userEmail, password: this.password, first_name: this.firstName, last_name: this.lastName, tel, lang: this.$i18n.locale,
+            email: this.userEmail, password: this.password, lang: this.$i18n.locale, channel: 'hm-web',
           })
             .then(r => {
-              console.log(r)
+              console.log('robin', r)
               if (r.code === 0) {
                 this.$bvModal.msgBoxOk(this.$i18n.t('Registered successfully'), {
                   title: this.$i18n.t('Confirmation'),

@@ -4,12 +4,6 @@
 
       <!-- Brand logo-->
       <b-link class="brand-logo">
-        <b-img
-          :src="logoUrl"
-          width="100"
-          height="50"
-          alt="logo"
-        />
         <h2 class="brand-text text-primary ml-1" />
         <b-dropdown
           id="lang"

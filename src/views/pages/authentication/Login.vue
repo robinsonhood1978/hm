@@ -4,46 +4,9 @@
 
       <!-- Brand logo-->
       <b-link class="brand-logo">
-        <b-img
-          :src="logoUrl"
-          width="100"
-          height="50"
-          alt="logo"
-        />
-        <h2 class="brand-text text-primary ml-1" />
-        <b-dropdown
-          id="lang"
-          v-ripple.400="'rgba(113, 102, 240, 0.15)'"
-          name="lang"
-          block
-          split
-          right
-          split-variant="outline-primary"
-          variant="outline-primary"
-        >
-          <template #button-content>
-            <b-img
-              :src="currentLocale.img"
-              height="14px"
-              width="22px"
-              :alt="currentLocale.locale"
-            />
-            <span class="ml-50 text-body">{{ currentLocale.name }}</span>
-          </template>
-          <b-dropdown-item
-            v-for="localeObj in locales"
-            :key="localeObj.locale"
-            @click="ChangeLanguage(localeObj)"
-          >
-            <b-img
-              :src="localeObj.img"
-              height="14px"
-              width="22px"
-              :alt="localeObj.locale"
-            />
-            <span class="ml-50">{{ localeObj.name }}</span>
-          </b-dropdown-item>
-        </b-dropdown>
+        <h2 class="brand-text text-primary ml-1">
+          {{ $t('Brand') }}
+        </h2>
       </b-link>
       <!-- /Brand logo-->
 
@@ -56,14 +19,14 @@
           <b-img
             fluid
             :src="imgUrl"
-            alt="Login abc"
+            alt="Register V2"
           />
         </div>
       </b-col>
       <!-- /Left Text-->
 
-      <!-- Login-->
-      <b-row
+      <!-- Register-->
+      <b-col
         lg="4"
         class="d-flex align-items-center auth-bg px-2 p-lg-5"
       >
@@ -73,19 +36,12 @@
           lg="12"
           class="px-xl-2 mx-auto"
         >
-          <b-row>
-            <b-col md="6" />
-            <b-col md="6" />
-
-          </b-row>
-          <br><br><br>
           <b-card-title
             class="mb-1 font-weight-bold"
             title-tag="h2"
           >
             {{ $t('Welcome to') }} 👋
           </b-card-title>
-          <b-card-text class="mb-2" />
 
           <!-- form -->
           <validation-observer
@@ -96,6 +52,45 @@
               class="auth-login-form mt-2"
               @submit.prevent="login"
             >
+              <b-form-group
+                :label="$t('Preferred Language')"
+                label-for="lang"
+              >
+                <b-dropdown
+                  id="lang"
+                  v-ripple.400="'rgba(113, 102, 240, 0.15)'"
+                  name="lang"
+                  block
+                  split
+                  right
+                  split-variant="outline-primary"
+                  variant="outline-primary"
+                >
+                  <template #button-content>
+                    <b-img
+                      :src="currentLocale.img"
+                      height="14px"
+                      width="22px"
+                      :alt="currentLocale.locale"
+                    />
+                    <span class="ml-50 text-body">{{ currentLocale.name }}</span>
+                  </template>
+                  <b-dropdown-item
+                    v-for="localeObj in locales"
+                    :key="localeObj.locale"
+                    @click="ChangeLanguage(localeObj)"
+                  >
+                    <b-img
+                      :src="localeObj.img"
+                      height="14px"
+                      width="22px"
+                      :alt="localeObj.locale"
+                    />
+                    <span class="ml-50">{{ localeObj.name }}</span>
+                  </b-dropdown-item>
+                </b-dropdown>
+
+              </b-form-group>
               <!-- email -->
               <b-form-group
                 :label="$t('Email')"
@@ -122,9 +117,9 @@
               <b-form-group>
                 <div class="d-flex justify-content-between">
                   <label for="login-password">{{ $t('Password') }}</label>
-                  <b-link :to="{name:'auth-forgot-password'}">
+                  <!-- <b-link :to="{name:'auth-forgot-password'}">
                     <small>{{ $t('Forgot Password?') }}</small>
-                  </b-link>
+                  </b-link> -->
                 </div>
                 <validation-provider
                   #default="{ errors }"
@@ -187,9 +182,10 @@
             </b-link>
           </b-card-text>
         </b-col>
-        <!-- /Login-->
-      </b-row>
-    </b-row></div>
+      </b-col>
+    <!-- /Register-->
+    </b-row>
+  </div>
 </template>
 
 <script>
@@ -233,7 +229,6 @@ export default {
   mixins: [togglePasswordVisibility],
   data() {
     return {
-      logoUrl: null,
       company: null,
       status: '',
       password: '',
@@ -245,19 +240,14 @@ export default {
       email,
       locales: [
         {
-          locale: 'en',
-          img: require('@/assets/images/flags/en.png'),
-          name: 'English',
-        },
-        {
-          locale: 'ko',
-          img: require('@/assets/images/flags/ko.png'),
-          name: 'Korean',
-        },
-        {
           locale: 'zh_CN',
           img: require('@/assets/images/flags/cn.png'),
           name: 'China',
+        },
+        {
+          locale: 'en',
+          img: require('@/assets/images/flags/en.png'),
+          name: 'English',
         },
       ],
     }
@@ -283,26 +273,12 @@ export default {
     },
   },
   created() {
-    this.getLogo()
   },
   methods: {
     ChangeLanguage(localeObj) {
       console.log('localeObj.locale', localeObj.locale)
       this.$i18n.locale = localeObj.locale
       localStorage.setItem('language', localeObj.locale)
-    },
-    async getLogo() {
-      if (this.$store.state.ship2u.company) {
-        this.company = this.$store.state.ship2u.company
-      } else {
-        this.company = await store.dispatch('ship2u/company')
-      }
-      if (this.company) {
-        this.logoUrl = store.state.ship2u.apiHost + this.company.logo
-      } else {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.logoUrl = require('@/assets/images/logo/logo.png')
-      }
     },
     login() {
       this.$refs.loginForm.validate().then(success => {
@@ -325,8 +301,8 @@ export default {
                 // ? This is just for demo purpose. Don't think CASL is role based in this case, we used role in if condition just for ease
                 this.$router.push(getHomeRouteForLoggedInUser(userData.role))
                   .then(async () => {
-                    await store.dispatch('ship2u/parcels', { forceRefresh: true })
-                    await store.dispatch('ship2u/orders')
+                    // await store.dispatch('ship2u/parcels', { forceRefresh: true })
+                    // await store.dispatch('ship2u/orders')
                     this.$toast({
                       component: ToastificationContent,
                       position: 'top-right',
@@ -334,7 +310,7 @@ export default {
                         title: `${this.$i18n.t('Welcome')} ${userData.fullName || userData.username}`,
                         icon: 'CoffeeIcon',
                         variant: 'success',
-                        text: `${this.$i18n.t('You have successfully logged in as ')}${this.$i18n.t(userData.role)}.${this.$i18n.t('Now you can start to explore!')}`,
+                        text: `${this.$i18n.t('You have successfully logged in as ')},${this.$i18n.t('Now you can start to explore!')}`,
                       },
                     })
                   })

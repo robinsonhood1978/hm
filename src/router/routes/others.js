@@ -69,6 +69,25 @@ export default [
     },
   },
   {
+    path: '/evaluation',
+    name: 'ship2u-evaluation',
+    component: () => import('@/views/ship2u/evaluation.vue'),
+    meta: {
+      resource: 'Client',
+      action: 'read',
+      pageTitle: 'Self Evaluation',
+      breadcrumb: [
+        {
+          text: 'Account',
+        },
+        {
+          text: 'Self Evaluation',
+          active: true,
+        },
+      ],
+    },
+  },
+  {
     path: '/modifypwd',
     name: 'ship2u-modify-pwd',
     component: () => import('@/views/ship2u/modifypwd.vue'),

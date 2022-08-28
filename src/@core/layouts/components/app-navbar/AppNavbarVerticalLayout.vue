@@ -25,32 +25,6 @@
 
     <b-navbar-nav class="nav align-items-center ml-auto">
       <locale />
-      <span
-        v-if="!$store.state.ship2u.active"
-        class="ml-50"
-      >
-        <b-badge
-          id="email_verify"
-          variant="light-warning"
-        >
-          {{ $t('Email Address Not Verified') }}
-        </b-badge>
-        <b-popover
-          target="email_verify"
-          triggers="hover focus"
-          custom-class="wide-popover"
-        >
-          <b-card
-            border-variant="warning"
-            bg-variant="transparent"
-            class="shadow-none"
-          >
-            <b-card-text>
-              {{ $t('Email Address Not Verified Hint') }}
-            </b-card-text>
-          </b-card>
-        </b-popover>
-      </span>
       <user-dropdown />
     </b-navbar-nav>
   </div>
@@ -58,7 +32,7 @@
 
 <script>
 import {
-  BLink, BNavbarNav, BBadge, VBPopover, BPopover, BCard, BCardText,
+  BLink, BNavbarNav, VBPopover,
 } from 'bootstrap-vue'
 // import Bookmarks from './components/Bookmarks.vue'
 import Locale from './components/Locale.vue'
@@ -69,7 +43,6 @@ import UserDropdown from './components/UserDropdown.vue'
 export default {
   components: {
     BLink,
-    BBadge,
     // Navbar Components
     BNavbarNav,
     // Bookmarks,
@@ -77,9 +50,6 @@ export default {
     DarkToggler,
     // NotificationDropdown,
     UserDropdown,
-    BPopover,
-    BCard,
-    BCardText,
   },
   directives: {
     'b-popover': VBPopover,

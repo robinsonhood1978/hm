@@ -27,7 +27,6 @@
               <span class="brand-logo">
                 <b-img
                   :src="appLogoImage"
-                  width="80"
                   alt="logo"
                 />
               </span>
@@ -167,12 +166,12 @@ export default {
               action: 'read',
               resource: 'Client',
             },
-            {
-              title: 'Cost Calculation',
-              route: 'cost',
-              action: 'read',
-              resource: 'Client',
-            },
+            // {
+            //   title: 'Cost Calculation',
+            //   route: 'cost',
+            //   action: 'read',
+            //   resource: 'Client',
+            // },
           ],
         },
         {
@@ -189,117 +188,123 @@ export default {
               resource: 'Client',
             },
             {
+              title: 'Self Evaluation',
+              route: 'ship2u-evaluation',
+              action: 'read',
+              resource: 'Client',
+            },
+            {
               title: 'Password',
               route: 'ship2u-modify-pwd',
               action: 'read',
               resource: 'Client',
             },
-            {
-              title: 'Shipping Address',
-              route: 'ship2u-shipping-address-list',
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'Sender Address',
-              route: 'ship2u-sender-address-list',
-              action: 'read',
-              resource: 'Client',
-            },
-          ],
-        },
-        {
-          title: 'Parcels',
-          icon: 'ArchiveIcon',
-          // tag: pWaiting,
-          // tagVariant: 'light-warning',
-          action: 'read',
-          resource: 'Client',
-          children: [
             // {
-            //   title: 'Draft',
-            //   route: 'draft_parcels',
-            //   tag: store.getters['ship2u/parcels']({ parcelState: 'D' }),
+            //   title: 'Shipping Address',
+            //   route: 'ship2u-shipping-address-list',
             //   action: 'read',
             //   resource: 'Client',
             // },
-            {
-              title: 'In Warehouse',
-              route: 'waiting_parcels',
-              tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 1 }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'Processing',
-              route: 'processing_parcels',
-              tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 0 }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'Outbound',
-              route: 'out_parcels',
-              tag: store.getters['ship2u/parcels']({ parcelState: 'T', unsent: 0 }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'History',
-              route: 'history_parcels',
-              action: 'read',
-              resource: 'Client',
-            },
+            // {
+            //   title: 'Sender Address',
+            //   route: 'ship2u-sender-address-list',
+            //   action: 'read',
+            //   resource: 'Client',
+            // },
           ],
         },
-        {
-          title: 'Freight Orders',
-          icon: 'CheckSquareIcon',
-          action: 'read',
-          resource: 'Client',
-          children: [
-            {
-              title: 'Create',
-              route: 'ship2u-order-add',
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'Waiting',
-              route: 'draft_order',
-              tag: store.getters['ship2u/orders']({ orderState: 'D' }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'Processing',
-              route: 'processing_order',
-              tag: store.getters['ship2u/orders']({ orderState: 'P' }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'In Transit',
-              route: 'transit_order',
-              tag: store.getters['ship2u/orders']({ orderState: 'T' }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'History',
-              route: 'history_order',
-              tag: store.getters['ship2u/orders']({ orderState: 'H' }),
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'All',
-              route: 'all_order',
-              action: 'read',
-              resource: 'Client',
-            },
-          ],
-        },
+        // {
+        //   title: 'Parcels',
+        //   icon: 'ArchiveIcon',
+        //   // tag: pWaiting,
+        //   // tagVariant: 'light-warning',
+        //   action: 'read',
+        //   resource: 'Client',
+        //   children: [
+        //     // {
+        //     //   title: 'Draft',
+        //     //   route: 'draft_parcels',
+        //     //   tag: store.getters['ship2u/parcels']({ parcelState: 'D' }),
+        //     //   action: 'read',
+        //     //   resource: 'Client',
+        //     // },
+        //     {
+        //       title: 'In Warehouse',
+        //       route: 'waiting_parcels',
+        //       tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 1 }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'Processing',
+        //       route: 'processing_parcels',
+        //       tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 0 }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'Outbound',
+        //       route: 'out_parcels',
+        //       tag: store.getters['ship2u/parcels']({ parcelState: 'T', unsent: 0 }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'History',
+        //       route: 'history_parcels',
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //   ],
+        // },
+        // {
+        //   title: 'Freight Orders',
+        //   icon: 'CheckSquareIcon',
+        //   action: 'read',
+        //   resource: 'Client',
+        //   children: [
+        //     {
+        //       title: 'Create',
+        //       route: 'ship2u-order-add',
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'Waiting',
+        //       route: 'draft_order',
+        //       tag: store.getters['ship2u/orders']({ orderState: 'D' }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'Processing',
+        //       route: 'processing_order',
+        //       tag: store.getters['ship2u/orders']({ orderState: 'P' }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'In Transit',
+        //       route: 'transit_order',
+        //       tag: store.getters['ship2u/orders']({ orderState: 'T' }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'History',
+        //       route: 'history_order',
+        //       tag: store.getters['ship2u/orders']({ orderState: 'H' }),
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //     {
+        //       title: 'All',
+        //       route: 'all_order',
+        //       action: 'read',
+        //       resource: 'Client',
+        //     },
+        //   ],
+        // },
       ]
       return arr
     })

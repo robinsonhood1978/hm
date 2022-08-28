@@ -13,7 +13,7 @@ import {
   alpha_num as rule_alpha_num,
   length as rule_length,
 } from 'vee-validate/dist/rules'
-import ar from 'vee-validate/dist/locale/ar.json'
+import zh from 'vee-validate/dist/locale/zh_CN.json'
 import en from 'vee-validate/dist/locale/en.json'
 
 // eslint-disable-next-line object-curly-newline
@@ -81,19 +81,20 @@ localize({
       },
     },
   },
-  ar: {
-    messages: ar.messages,
+  zh: {
+    messages: zh.messages,
     names: {
-      email: 'البريد الإلكتروني',
-      password: 'كلمة السر',
+      email: '邮箱',
+      password: '密码',
     },
     fields: {
       password: {
-        min: 'كلمة السر قصيرة جداً سيتم اختراقك',
+        min: '{_field_} 太短',
       },
     },
   },
 })
+localize('zh_cn', zh)
 // ////////////////////////////////////////////////////////
 // NOTE:
 // Quasar validation for reference only

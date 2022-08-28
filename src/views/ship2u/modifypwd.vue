@@ -197,7 +197,7 @@ export default {
         if (success) {
           console.log(this.password)
           store.dispatch('ship2u/modifyPwd', {
-            pwd: this.password,
+            password: this.password,
           })
             .then(r => {
               if (r.code === 0) {

@@ -26,14 +26,17 @@ axios.interceptors.response.use(response => response, error => {
   return Promise.reject(error)
 })
 
-const apiPath = `${apiHost}/api`
-const apiToken = `${apiHost}/api-token-auth/`
-const apiProfile = `${apiPath}/packgo/profile/`
+const apiPath = `${apiHost}`
+const apiToken = `${apiHost}/login`
+const apiModifyPwd = `${apiPath}/pwd`
+const apiEvaluation = `${apiPath}/evaluation`
+const apiUploadFile = `${apiPath}/upload`
+const apiProfile = `${apiPath}/profile`
 const apiCompany = `${apiPath}/home/company/`
 const apiAutoSuggestAddress = `${apiPath}/freightcustomers/suggest_address/?address=`
 const apiAddress = `${apiPath}/freightcustomers/addresses/`
 const apiVerifyAddress = `${apiPath}/freightcustomers/verify_address/`
-const apiRegister = `${apiPath}/freightcustomers/register/`
+const apiRegister = `${apiPath}/signup`
 const apiGetAddress = `${apiPath}/freightcustomers/get_address/`
 const apiPackage = `${apiPath}/parcels/`
 const apiEditParcelEndpoint = `${apiPackage}edit_parcel/`
@@ -45,7 +48,6 @@ const apiVouchers = `${apiPath}/promotions/vouchers/`
 const apiForgotPwd = `${apiPath}/home/forgot_pwd/`
 const apiVerifyEmail = `${apiPath}/home/verify_email/`
 const apiResetPwd = `${apiPath}/home/resetpwd/`
-const apiModifyPwd = `${apiPath}/freightcustomers/wechat_password/`
 const apiParcelNames = `${apiPath}/freightorders/names/`
 
 const d = {
@@ -57,6 +59,7 @@ const d = {
   company: null,
   authToken: '',
   userProfile: null,
+  evaluation: null,
   orders: null,
   parcels: null,
   history_parcels: null,
@@ -137,36 +140,43 @@ export default {
       const map = new Map(arr)
       return map
     },
+    headers_multipuart_form: state => {
+      const headers = {
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${state.authToken}`,
+      }
+      return headers
+    },
     headers: state => {
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `JWT ${state.authToken}`,
+        Authorization: `Bearer ${state.authToken}`,
       }
       return headers
     },
     headers_get_notoken: () => {
       const headers = {
-        appid: 'ship2u-web',
+        appid: 'hm-web',
       }
       return headers
     },
     headers_post_notoken: () => {
       const headers = {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        appid: 'ship2u-web',
+        'Content-Type': 'application/json',
+        appid: 'hm-web',
       }
       return headers
     },
     headers_json: state => {
       const headers = {
         'Content-Type': 'application/json',
-        Authorization: `JWT ${state.authToken}`,
+        Authorization: `Bearer ${state.authToken}`,
       }
       return headers
     },
     get_headers: state => {
       const headers = {
-        Authorization: `JWT ${state.authToken}`,
+        Authorization: `Bearer ${state.authToken}`,
       }
       return headers
     },
@@ -197,6 +207,9 @@ export default {
     },
     setUserProfile(state, val) {
       state.userProfile = val
+    },
+    setEvaluation(state, val) {
+      state.evaluation = val
     },
     setOrders(state, val) {
       state.orders = val
@@ -251,6 +264,89 @@ export default {
     },
   },
   actions: {
+    async uploadFile({ getters }, obj) {
+      let code = 0
+      let msg = 'Success'
+      let file = {}
+      try {
+        await axios.post(apiUploadFile, obj, {
+          headers: getters.headers_multipuart_form,
+        }).then(resp => {
+          file = resp.data
+        }).catch(error => {
+          console.log(error)
+          console.log(`${error.response.status}---${error.response.statusText}`)
+          code = 2
+          msg = error.response.statusText
+        })
+      } catch (e) {
+        console.log(e)
+        code = 3
+        msg = e
+      }
+      return { code, msg, file }
+    },
+    async updateEvaluation({ getters, commit }, queryObj) {
+      let code = 0
+      let msg = 'Success'
+      try {
+        await axios.post(apiEvaluation, queryObj, {
+          headers: getters.headers_json,
+        }).then(resp => {
+          // data = ret.data
+          console.log('robin:', resp)
+          if (resp.status === 201) {
+            // console.log(resp)
+            code = 1
+            commit('setEvaluation', resp.data)
+          }
+        }).catch(error => {
+          console.log(error)
+          console.log(`${error.response.status}---${error.response.statusText}`)
+          code = 2
+          msg = error.response.statusText
+        })
+      } catch (e) {
+        console.log(e)
+        code = 3
+        msg = e
+      }
+      return { code, msg }
+    },
+    async evaluation({ state, dispatch }) {
+      let obj = {}
+      if (!state.evaluation) {
+        obj = await dispatch('getEvaluation')
+      } else {
+        obj = state.evaluation
+        console.log('profile exist')
+      }
+      return obj
+    },
+    async getEvaluation({ getters, commit }) {
+      let code = 0
+      let msg = ''
+      let obj = ''
+      try {
+        await axios.get(apiEvaluation, {
+          headers: getters.get_headers,
+        }).then(resp => {
+          // console.log('get evaluation ok', resp)
+          msg = 'get evaluation ok'
+          code = 0
+          obj = resp.data
+          commit('setEvaluation', obj)
+        }).catch(error => {
+          console.log(error)
+          console.log(`${error.response.status}---${error.response.statusText}`)
+          code = 2
+        })
+      } catch (e) {
+        console.log(e)
+        code = 3
+      }
+      return { code, msg, obj }
+    },
     // 获取包裹清关名称
     async parcelNames({ getters }) {
       let code = 0
@@ -279,7 +375,7 @@ export default {
     async modifyPwd({ getters }, queryObj) {
       let data
       try {
-        await axios.post(apiModifyPwd, qs.stringify(queryObj), {
+        await axios.post(apiModifyPwd, queryObj, {
           headers: getters.headers_json,
         }).then(resp => {
           data = resp.data
@@ -295,27 +391,28 @@ export default {
       return data
     },
     async profile({ state, commit, getters }) {
-      let user = ''
+      let user = {}
       if (!state.userProfile) {
         await axios.get(apiProfile, {
           headers: getters.get_headers,
         }).then(ret => {
-          user = ret.data
-          user.ability = [
-            {
-              action: 'read',
-              subject: 'Client',
-            },
-            {
-              action: 'read',
-              subject: 'Auth',
-            },
-            {
-              action: 'read',
-              subject: 'Analytics',
-            },
-          ]
-          user.role = 'client'
+          user.profile = ret.data
+          // user.ability = [
+          //   {
+          //     action: 'read',
+          //     subject: 'Client',
+          //   },
+          //   {
+          //     action: 'read',
+          //     subject: 'Auth',
+          //   },
+          //   {
+          //     action: 'read',
+          //     subject: 'Analytics',
+          //   },
+          // ]
+          // user.role = 'client'
+
           user.ability = [
             {
               action: 'manage',
@@ -323,9 +420,9 @@ export default {
             },
           ]
           user.role = 'admin'
-          user.fullName = user.customer.first_name + user.customer.last_name
-          user.username = user.customer.username
-          console.log('user:', user)
+          user.fullName = ''
+          user.username = ''
+
           // eslint-disable-next-line global-require
           // user.avatar = require('@/assets/images/avatars/13-small.png')
           commit('setUserProfile', user)
@@ -337,7 +434,7 @@ export default {
       return user
     },
     async login({ commit, dispatch }, { email, password }) {
-      console.log('email:', email)
+      // console.log('email:', email)
       // console.log(password)
 
       let error = {
@@ -345,13 +442,13 @@ export default {
       }
       // console.log(process.env.NODE_ENV)
       let user
-      let active = false
-      const res = await dispatch('getToken', { username: email, password })
+      const active = false
+      const res = await dispatch('getToken', { email, password })
       if (res.status === 200) {
-        await dispatch('isActive')
-          .then(resp => {
-            active = resp.obj
-          })
+        // await dispatch('isActive')
+        //   .then(resp => {
+        //     active = resp.obj
+        //   })
         commit('setActive', active)
         // if (!active) {
         //   error = {
@@ -402,17 +499,17 @@ export default {
 
       return mytoken
     },
-    async getToken({ commit }, { username, password }) {
+    async getToken({ commit }, { email, password }) {
       let mytoken
       let status = 200
       const data = {
-        username,
+        email,
         password,
       }
       await axios.post(apiToken, data).then(ret => {
         mytoken = ret.data.token
         commit('setToken', mytoken)
-        commit('setUsername', username)
+        commit('setUsername', email)
         commit('setPassword', password)
         // console.log(mytoken)
       }).catch(error => {
@@ -625,14 +722,14 @@ export default {
       let msg = ''
       // const { obj } = queryObj
       try {
-        await axios.post(apiRegister, qs.stringify(queryObj), {
+        await axios.post(apiRegister, queryObj, {
           headers: getters.headers_post_notoken,
         }).then(resp => {
           // data = ret.data
-          if (resp.data.code !== 0) {
+          if (resp.status !== 201) {
             console.log(resp)
-            code = resp.data.code
-            msg = resp.data.message
+            code = resp.status
+            msg = 'Fail.'
             console.log({ code, msg })
           } else {
             console.log('register ok')
@@ -641,6 +738,9 @@ export default {
           }
         }).catch(error => {
           console.log(error)
+          if (error.response.status === 409) {
+            msg = 'Email already exists.'
+          } else { msg = `${error.response.status}---${error.response.statusText}` }
           console.log(`${error.response.status}---${error.response.statusText}`)
           code = 2
         })
@@ -675,17 +775,22 @@ export default {
       }
       return { code, msg, obj }
     },
-    async updateProfile({ dispatch, getters }, queryObj) {
+    async updateProfile({ getters, state, commit }, queryObj) {
       let code = 0
       let msg = 'Success'
+      let user = {}
       try {
-        await axios.post(apiProfile, qs.stringify(queryObj), {
-          headers: getters.headers,
+        await axios.post(apiProfile, queryObj, {
+          headers: getters.headers_json,
         }).then(resp => {
           // data = ret.data
-          if (resp.data.code !== 0) {
+          console.log('robin:', resp)
+          if (resp.status === 201) {
             // console.log(resp)
             code = 1
+            user = state.userProfile
+            user.profile = resp.data
+            commit('setUserProfile', user)
           } else {
             // console.log(resp)
           }
@@ -700,7 +805,7 @@ export default {
         code = 3
         msg = e
       }
-      await dispatch('getProfile')
+      // await dispatch('getProfile')
       return { code, msg }
     },
     async newOrder({
