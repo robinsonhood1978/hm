@@ -28,7 +28,11 @@
             </b-form-group>
           </b-col>
           <!-- username -->
-          <b-col cols="4">
+          <b-col
+            v-if="!edit"
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Name')"
               label-for="fh-usename"
@@ -59,7 +63,11 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="2">
+          <b-col
+            v-if="!edit"
+            md="2"
+            sm="12"
+          >
             <b-form-group
               :label="$t('First Name')"
               label-for="first_name"
@@ -89,7 +97,11 @@
               </validation-provider>
             </b-form-group>
           </b-col>
-          <b-col cols="2">
+          <b-col
+            v-if="!edit"
+            md="2"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Last Name')"
               label-for="last_name"
@@ -120,7 +132,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Nick')"
               label-for="nick"
@@ -138,7 +153,11 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            v-if="!edit"
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Gender')"
               label-for="gender"
@@ -165,7 +184,11 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            v-if="!edit"
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Birth Month')"
               label-for="example-input"
@@ -206,7 +229,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Education')"
               label-for="vi-education"
@@ -230,7 +256,37 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
+            <b-form-group
+              :label="$t('Profession')"
+              label-for="vi-profession"
+            >
+              <template v-slot:label>
+                {{ $t('Profession') }} <span class="text-danger">*</span>
+              </template>
+              <validation-provider
+                #default="{ errors }"
+                :name="$t('Profession')"
+                rules="required"
+              >
+                <v-select
+                  v-model="profile.profession"
+                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  label="title"
+                  :options="profession_option"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Country')"
               label-for="vi-country"
@@ -263,7 +319,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('City')"
               label-for="vi-city"
@@ -296,7 +355,7 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <!-- <b-col cols="4">
             <b-form-group
               :label="$t('Address')"
               label-for="vi-address"
@@ -321,15 +380,12 @@
                     :placeholder="$t('Address')"
                   />
                 </b-input-group>
-                <!-- <b-form-text class="text-danger">
-                  {{ $t('Please fill in the commonly used mobile phone number, used to communicate urgent cargo matters.') }}
-                </b-form-text> -->
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
-          </b-col>
+          </b-col> -->
 
-          <b-col cols="3">
+          <!-- <b-col cols="3">
             <b-form-group
               :label="$t('Email')"
               label-for="fh-email"
@@ -354,16 +410,13 @@
                     readonly
                   />
                 </b-input-group>
-                <!-- <b-form-text class="text-danger">
-                  {{ $t('Enter a Valid Email. It is used to receive cargo reminders.') }}
-                </b-form-text> -->
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
-          </b-col>
+          </b-col> -->
 
           <!-- mobile -->
-          <b-col cols="3">
+          <!-- <b-col cols="3">
             <b-form-group
               :label="$t('Mobile')"
               label-for="vi-mobile"
@@ -392,9 +445,9 @@
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
-          </b-col>
+          </b-col> -->
 
-          <b-col cols="3">
+          <!-- <b-col cols="3">
             <b-form-group
               :label="$t('Wechat')"
               label-for="vi-wechat"
@@ -422,9 +475,9 @@
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
-          </b-col>
+          </b-col> -->
 
-          <b-col cols="3">
+          <!-- <b-col cols="3">
             <b-form-group
               :label="$t('Enigma')"
               label-for="vi-enigma"
@@ -445,9 +498,12 @@
                 />
               </b-input-group>
             </b-form-group>
-          </b-col>
+          </b-col> -->
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Baptism Date')"
               label-for="baptism"
@@ -488,7 +544,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Church')"
               label-for="vi-church"
@@ -518,7 +577,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="4">
+          <b-col
+            md="4"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Church Time')"
               label-for="vi-churchtime"
@@ -572,7 +634,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="3">
+          <b-col
+            md="3"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Holly Bible Times')"
               label-for="vi-hollybible"
@@ -612,7 +677,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="3">
+          <b-col
+            md="3"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Pastor Agree')"
               label-for="vi-pastor_agree"
@@ -652,7 +720,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="3">
+          <b-col
+            md="3"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Recommender')"
               label-for="vi-recommender"
@@ -682,7 +753,10 @@
             </b-form-group>
           </b-col>
 
-          <b-col cols="3">
+          <b-col
+            md="3"
+            sm="12"
+          >
             <b-form-group
               :label="$t('Recommender Contact')"
               label-for="vi-recommender_contact"
@@ -699,7 +773,7 @@
                   class="input-group-merge"
                 >
                   <b-input-group-prepend is-text>
-                    <feather-icon icon="SmartphoneIcon" />
+                    <feather-icon icon="MailIcon" />
                   </b-input-group-prepend>
                   <b-form-input
                     id="vi-recommender_contact"
@@ -714,7 +788,8 @@
 
           <b-col
             v-if="moreInfo"
-            cols="3"
+            md="3"
+            sm="12"
           >
             <b-form-group
               :label="$t('Video Times')"
@@ -741,7 +816,8 @@
 
           <b-col
             v-if="moreInfo"
-            cols="3"
+            md="3"
+            sm="12"
           >
             <b-form-group
               :label="$t('Book Times')"
@@ -768,7 +844,8 @@
 
           <b-col
             v-if="moreInfo"
-            cols="3"
+            md="3"
+            sm="12"
           >
             <b-form-group
               :label="$t('Spiritual Gift')"
@@ -791,11 +868,12 @@
 
           <b-col
             v-if="moreInfo"
-            cols="3"
+            md="3"
+            sm="12"
           >
             <b-form-group
               :label="$t('How to know the course')"
-              label-for="vi-know-channel"
+              label-for="knowchannel"
             >
               <template v-slot:label>
                 {{ $t('How to know the course') }} <span class="text-danger">*</span>
@@ -805,24 +883,20 @@
                 :name="$t('How to know the course')"
                 rules="required"
               >
-                <b-input-group
-                  class="input-group-merge"
-                >
-                  <b-input-group-prepend is-text>
-                    <feather-icon icon="LinkIcon" />
-                  </b-input-group-prepend>
-                  <b-form-input
-                    id="vi-know-channel"
-                    v-model="profile.know_channel"
-                    :placeholder="$t('How to know the course')"
-                  />
-                </b-input-group>
+                <v-select
+                  v-model="profile.know_channel"
+                  :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
+                  label="title"
+                  :options="channel_option"
+                />
                 <small class="text-danger">{{ errors[0] }}</small>
               </validation-provider>
             </b-form-group>
           </b-col>
 
-          <b-col cols="12">
+          <b-col
+            cols="12"
+          >
             <b-alert
               variant="primary"
               show
@@ -925,14 +999,14 @@
             >
               {{ $t('Submit') }}
             </b-button>
-            <!-- <b-button
+            <b-button
               v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-              type="reset"
+              type="button"
               variant="outline-secondary"
-              @click="reset"
+              @click="Save"
             >
-              {{ $t('Reset') }}
-            </b-button> -->
+              {{ $t('Save') }}
+            </b-button>
           </b-col>
         </b-row>
       </b-form>
@@ -943,7 +1017,7 @@
 <script>
 import axios from 'axios'
 import BCardCode from '@core/components/b-card-code'
-import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
+// import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 import {
   ValidationProvider, ValidationObserver,
 } from 'vee-validate'
@@ -1023,6 +1097,28 @@ export default {
         { title: '研究生' },
         { title: '博士' },
       ],
+      profession_option: [
+        { title: '建筑与工程' },
+        { title: '商业与金融' },
+        { title: 'IT与计算机' },
+        { title: '艺术与设计' },
+        { title: '医疗与卫生' },
+        { title: '教育与教学' },
+        { title: '科学与研究' },
+        { title: '行政与司法' },
+        { title: '媒体与传播' },
+        { title: '食品与营养' },
+        { title: '农林及其它' },
+      ],
+      channel_option: [
+        { title: '牧者同工朋友推荐' },
+        { title: '招生广告' },
+        { title: '油管宣传视频' },
+        { title: '新课海报' },
+        { title: '微信分享' },
+        { title: '电邮群发' },
+        { title: '其它' },
+      ],
       videotimes_option: [
         { title: '0次' },
         { title: '1-5次' },
@@ -1040,13 +1136,21 @@ export default {
       option: [
         { title: '灵修与明白神的旨意【祝健】- 2022年3月春季班', type: 1 },
         { title: '灵修与明白神的旨意【祝健】- 2022年10月秋季班', type: 1 },
-        { title: '丰盛的救恩--重生的意义【周小安】', type: 0 },
-        { title: '建造使命教会【王天声】', type: 0 },
-        { title: '“神的宏伟计划”青年领袖班【陈卧绿、田永明】', type: 0 },
+        // { title: '丰盛的救恩--重生的意义【周小安】', type: 0 },
+        // { title: '建造使命教会【王天声】', type: 0 },
+        // { title: '“神的宏伟计划”青年领袖班【陈卧绿、田永明】', type: 0 },
       ],
     }
   },
   computed: {
+    edit() {
+      if (this.$store.state.ship2u.userProfile.profile?.name && this.$store.state.ship2u.userProfile.profile?.first_name
+      && this.$store.state.ship2u.userProfile.profile?.last_name && this.$store.state.ship2u.userProfile.profile?.gender
+      && this.$store.state.ship2u.userProfile.profile?.birthday) {
+        return true
+      }
+      return false
+    },
     validation() {
       return this.mobile.length > 8 && this.mobile.length < 16
     },
@@ -1055,8 +1159,10 @@ export default {
         courses: [],
         gender: { title: '男' },
         education: { title: '本科' },
+        profession: { title: '建筑与工程' },
         video_times: { title: '0次' },
         book_times: { title: '0次' },
+        know_channel: { title: '牧者同工朋友推荐' },
       }
       const { profile } = this.$store.state.ship2u.userProfile
 
@@ -1120,8 +1226,42 @@ export default {
       // The following will be an empty string until a valid date is entered
       this.selected_month = ctx.selectedYMD
     },
-    reset() {
-      this.mobile = ''
+    async Save() {
+      let recommendationLetter = this.profile.recommendation_letter
+      if (this.file) {
+        const formData = new FormData()
+        formData.append('file', this.file)
+        const resp = await this.$store.dispatch('ship2u/uploadFile', formData)
+        recommendationLetter = resp.file.name
+      }
+      this.$store
+        .dispatch('ship2u/updateProfile', {
+          ...this.profile,
+          church_experience: this.church_experience,
+          personal_testimony: this.personal_testimony,
+          ideas_needs: this.ideas_needs,
+          birthday: this.birthday,
+          baptism_date: this.baptism_date,
+          recommendation_letter: recommendationLetter,
+        })
+        .then(() => {
+          this.$bvModal.msgBoxOk(this.$i18n.t('Save successful'), {
+            title: this.$i18n.t('Confirmation'),
+            okTitle: this.$i18n.t('OK'),
+            okVariant: 'success',
+            headerClass: 'p-2 border-bottom-0',
+            footerClass: 'p-2 border-top-0',
+          })
+            .then(() => {
+              // this.$router.push({ name: 'home' })
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        })
+        .catch(ex => {
+          console.log(ex)
+        })
     },
     validationForm() {
       this.$refs.simpleRules.validate().then(async success => {
@@ -1147,24 +1287,32 @@ export default {
               baptism_date: this.baptism_date,
               recommendation_letter: recommendationLetter,
             })
-            .then(response => {
-              console.log(response)
-              this.$toast({
-                component: ToastificationContent,
-                props: {
-                  title: 'Operation successful',
-                  icon: 'EditIcon',
-                  variant: 'success',
-                },
+            .then(() => {
+              this.$bvModal.msgBoxOk(this.$i18n.t('Operation successful'), {
+                title: this.$i18n.t('Confirmation'),
+                okTitle: this.$i18n.t('OK'),
+                okVariant: 'success',
+                headerClass: 'p-2 border-bottom-0',
+                footerClass: 'p-2 border-top-0',
               })
-
-              setTimeout(() => {
-                this.$router.go(-1)
-              }, 3000)
+                .then(() => {
+                  this.$router.push({ name: 'home' })
+                })
+                .catch(err => {
+                  console.log(err)
+                })
             })
             .catch(ex => {
               console.log(ex)
             })
+        } else {
+          this.$bvModal.msgBoxOk(this.$i18n.t('Check Fail'), {
+            title: this.$i18n.t('Confirmation'),
+            okTitle: this.$i18n.t('OK'),
+            okVariant: 'alert',
+            headerClass: 'p-2 border-bottom-0',
+            footerClass: 'p-2 border-top-0',
+          })
         }
       })
     },

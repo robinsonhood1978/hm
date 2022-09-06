@@ -19,7 +19,7 @@ axios.interceptors.response.use(response => response, error => {
   }
   if (error.response
     && error.response.status === 401) {
-    router.replace('/login')
+    router.replace('/')
     console.log('抱歉，您的登录状态已失效，请重新登录！')
     return Promise.reject(error)
   }
@@ -32,6 +32,7 @@ const apiModifyPwd = `${apiPath}/pwd`
 const apiEvaluation = `${apiPath}/evaluation`
 const apiUploadFile = `${apiPath}/upload`
 const apiProfile = `${apiPath}/profile`
+const apiForgotPwd = `${apiPath}/forgot_pwd`
 const apiCompany = `${apiPath}/home/company/`
 const apiAutoSuggestAddress = `${apiPath}/freightcustomers/suggest_address/?address=`
 const apiAddress = `${apiPath}/freightcustomers/addresses/`
@@ -45,9 +46,8 @@ const apiOrder = `${apiPath}/freightorders/`
 const apiActiveAccount = `${apiPath}/home/active/`
 const apiIsActive = `${apiPath}/packgo/isactive/`
 const apiVouchers = `${apiPath}/promotions/vouchers/`
-const apiForgotPwd = `${apiPath}/home/forgot_pwd/`
-const apiVerifyEmail = `${apiPath}/home/verify_email/`
-const apiResetPwd = `${apiPath}/home/resetpwd/`
+const apiVerifyEmail = `${apiPath}/verify_email`
+const apiResetPwd = `${apiPath}/resetpwd`
 const apiParcelNames = `${apiPath}/freightorders/names/`
 
 const d = {
@@ -598,7 +598,7 @@ export default {
     async resetpwd({ getters }, queryObj) {
       let boo
       try {
-        await axios.post(apiResetPwd, qs.stringify(queryObj), {
+        await axios.post(apiResetPwd, queryObj, {
           headers: getters.headers_post_notoken,
         }).then(resp => {
           boo = resp.data
@@ -616,11 +616,11 @@ export default {
     async verifyEmail({ getters }, { code }) {
       let boo
       try {
-        await axios.get(`${apiVerifyEmail}?code=${code}`, {
+        await axios.get(`${apiVerifyEmail}/${code}`, {
           headers: getters.headers_get_notoken,
         }).then(resp => {
           boo = resp.data
-          // console.log(resp)
+          console.log(resp)
         }).catch(error => {
           console.log(error)
           console.log(`${error.response.status}---${error.response.statusText}`)
@@ -633,7 +633,7 @@ export default {
     async forgotPwd({ getters }, { email }) {
       let boo
       try {
-        await axios.get(`${apiForgotPwd}?email=${email}`, {
+        await axios.get(`${apiForgotPwd}/${email}`, {
           headers: getters.headers_get_notoken,
         }).then(resp => {
           boo = resp.data
@@ -779,12 +779,13 @@ export default {
       let code = 0
       let msg = 'Success'
       let user = {}
+      console.log('req', queryObj)
       try {
         await axios.post(apiProfile, queryObj, {
           headers: getters.headers_json,
         }).then(resp => {
           // data = ret.data
-          console.log('robin:', resp)
+          // console.log('robin:', resp)
           if (resp.status === 201) {
             // console.log(resp)
             code = 1

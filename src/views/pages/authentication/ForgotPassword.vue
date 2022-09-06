@@ -164,19 +164,14 @@ export default {
       email,
       locales: [
         {
-          locale: 'en',
-          img: require('@/assets/images/flags/en.png'),
-          name: 'English',
-        },
-        {
-          locale: 'ko',
-          img: require('@/assets/images/flags/ko.png'),
-          name: 'Korean',
-        },
-        {
           locale: 'zh_CN',
           img: require('@/assets/images/flags/cn.png'),
           name: 'China',
+        },
+        {
+          locale: 'en',
+          img: require('@/assets/images/flags/en.png'),
+          name: 'English',
         },
       ],
     }
@@ -199,26 +194,12 @@ export default {
     },
   },
   created() {
-    this.getLogo()
   },
   methods: {
     ChangeLanguage(localeObj) {
       console.log('localeObj.locale', localeObj.locale)
       this.$i18n.locale = localeObj.locale
       localStorage.setItem('language', localeObj.locale)
-    },
-    async getLogo() {
-      if (this.$store.state.ship2u.company) {
-        this.company = this.$store.state.ship2u.company
-      } else {
-        this.company = await store.dispatch('ship2u/company')
-      }
-      if (this.company) {
-        this.logoUrl = store.state.ship2u.apiHost + this.company.logo
-      } else {
-        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
-        this.logoUrl = require('@/assets/images/logo/logo.png')
-      }
     },
     validationForm() {
       this.$refs.simpleRules.validate().then(success => {

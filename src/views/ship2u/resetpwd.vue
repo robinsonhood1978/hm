@@ -225,25 +225,24 @@ export default {
       required,
       locales: [
         {
-          locale: 'en',
-          img: require('@/assets/images/flags/en.png'),
-          name: 'English',
-        },
-        {
-          locale: 'ko',
-          img: require('@/assets/images/flags/ko.png'),
-          name: 'Korean',
-        },
-        {
           locale: 'zh_CN',
           img: require('@/assets/images/flags/cn.png'),
           name: 'China',
+        },
+        {
+          locale: 'en',
+          img: require('@/assets/images/flags/en.png'),
+          name: 'English',
         },
       ],
     }
   },
   computed: {
     currentLocale() {
+      if (localStorage.getItem('language')) {
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.$i18n.locale = localStorage.getItem('language')
+      }
       return this.locales.find(l => l.locale === this.$i18n.locale)
     },
     passwordToggleIcon() {
@@ -268,7 +267,7 @@ export default {
         if (success) {
           console.log(this.password)
           store.dispatch('ship2u/resetpwd', {
-            pwd: this.password, code: this.code,
+            password: this.password, code: this.code,
           })
             .then(r => {
               if (r) {

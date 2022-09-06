@@ -1,5 +1,9 @@
 {
   "Brand": "CPF Online School Registration System",
+  "Profession": "Profession",
+  "Operation successful": "Operation successful",
+  "Save successful": "Save successful",
+  "Check Fail": "Information is incorrect. Please complete the data and submit it again.",
   "Upload Recommender Letter": "Recommendation letter upload",
   "Choose a file or drop it here...": "Choose a file or drop it here...",
   "Uploaded Recommendation Letter": "Uploaded Recommendation Letter",
@@ -32,7 +36,7 @@
   "How to know the course": "How do you know about Pastor Zhu's spiritual course?",
   "Wechat": "Wechat",
   "Enigma": "Enigma",
-  "Birth Month": "Birth Month",
+  "Birth Month": "Birthday",
   "Consignee": "Consignee",
   "Customer Certificate": "Customer Certificate",
   "BACC File": "BACC File",

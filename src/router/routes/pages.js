@@ -10,7 +10,7 @@ export default [
     },
   },
   {
-    path: '/login',
+    path: '/',
     name: 'auth-login',
     component: () => import('@/views/pages/authentication/Login.vue'),
     meta: {

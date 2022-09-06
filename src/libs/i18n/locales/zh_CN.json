@@ -1,5 +1,9 @@
 {
     "Brand": "华牧网校报名系统",
+    "Profession": "职业",
+    "Operation successful": "操作成功",
+    "Save successful": "保存成功",
+    "Check Fail": "信息有误。请完善数据后重新提交。",
     "Upload Recommender Letter": "推荐信上传",
     "Choose a file or drop it here...": "选择文件或拖放",
     "Uploaded Recommendation Letter": "已上传推荐信",
@@ -234,7 +238,7 @@
     "Back to login": "返回登陆",
     "Please check out your mailbox and follow the instruction of email to reset your password.": "请查看您的电子邮箱，根据说明重置您的密码。",
     "Now you can reset your password.": "现在您可以重新设置密码。",
-    "Unauthorized access. Identity authentication failed.": "未经受权，身份验证失败。",
+    "Unauthorized access. Identity authentication failed.": "未经授权，身份验证失败。",
     "Reset password successfully": "重置密码成功",
     "Reset password failed. Please check your net connection and try again.": "重置密码失败，请确认网络连接后稍后再试。",
     "You have successfully logged in as ": "您已成功登陆",
