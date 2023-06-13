@@ -29,7 +29,10 @@ axios.interceptors.response.use(response => response, error => {
 const apiPath = `${apiHost}`
 const apiToken = `${apiHost}/login`
 const apiModifyPwd = `${apiPath}/pwd`
+const apiStudent = `${apiPath}/profiles`
 const apiEvaluation = `${apiPath}/evaluation`
+const apiExam = `${apiPath}/exam`
+const apiCourse = `${apiPath}/course`
 const apiUploadFile = `${apiPath}/upload`
 const apiProfile = `${apiPath}/profile`
 const apiForgotPwd = `${apiPath}/forgot_pwd`
@@ -53,7 +56,10 @@ const apiParcelNames = `${apiPath}/freightorders/names/`
 const d = {
   username: null,
   password: null,
+  course: null,
   active: false,
+  ability: null,
+  students: null,
   apiHost,
   login: false,
   company: null,
@@ -184,6 +190,15 @@ export default {
     // senderAddresses: state => state.addresses.filter(i => i.is_sender),
   },
   mutations: {
+    setCourse(state, val) {
+      state.course = val
+    },
+    setStudents(state, val) {
+      state.students = val
+    },
+    setAbility(state, val) {
+      state.ability = val
+    },
     setActive(state, val) {
       state.active = val
     },
@@ -264,6 +279,58 @@ export default {
     },
   },
   actions: {
+    async newExam({ getters, commit }, queryObj) {
+      let boo = false
+      try {
+        await axios.post(apiExam, queryObj, {
+          headers: getters.headers_json,
+        }).then(resp => {
+          if (resp.status !== 201) {
+            console.log(resp)
+          } else {
+            // data = resp.data.object
+            boo = true
+            commit('setEvaluation', resp.data)
+            console.log(resp.data)
+          }
+        }).catch(error => {
+          console.log(error)
+          console.log(`${error.response.status}---${error.response.statusText}`)
+        })
+      } catch (e) {
+        console.log(e)
+      }
+
+      return boo
+    },
+    async course({ getters, commit, state }, queryObj) {
+      let boo = false
+      try {
+        if (state.course) {
+          boo = true
+        } else {
+          await axios.post(apiCourse, queryObj, {
+            headers: getters.headers_json,
+          }).then(resp => {
+            if (resp.status !== 200) {
+              // console.log(resp)
+            } else {
+              // data = resp.data.object
+              boo = true
+              commit('setCourse', resp.data)
+              console.log(resp.data)
+            }
+          }).catch(error => {
+            console.log(error)
+            console.log(`${error.response.status}---${error.response.statusText}`)
+          })
+        }
+      } catch (e) {
+        console.log(e)
+      }
+
+      return boo
+    },
     async uploadFile({ getters }, obj) {
       let code = 0
       let msg = 'Success'
@@ -397,29 +464,18 @@ export default {
           headers: getters.get_headers,
         }).then(ret => {
           user.profile = ret.data
+          user.ability = state.ability
+          // console.log('ability', state.ability)
+          user.role = 'client'
+
           // user.ability = [
           //   {
-          //     action: 'read',
-          //     subject: 'Client',
-          //   },
-          //   {
-          //     action: 'read',
-          //     subject: 'Auth',
-          //   },
-          //   {
-          //     action: 'read',
-          //     subject: 'Analytics',
+          //     action: 'manage',
+          //     subject: 'all',
           //   },
           // ]
-          // user.role = 'client'
+          // user.role = 'admin'
 
-          user.ability = [
-            {
-              action: 'manage',
-              subject: 'all',
-            },
-          ]
-          user.role = 'admin'
           user.fullName = ''
           user.username = ''
 
@@ -432,6 +488,15 @@ export default {
         console.log('profile exist')
       }
       return user
+    },
+    async studentDetail({ getters }, { email }) {
+      let profile
+      await axios.get(`${apiProfile}/${email}`, {
+        headers: getters.get_headers,
+      }).then(ret => {
+        profile = ret.data
+      })
+      return profile
     },
     async login({ commit, dispatch }, { email, password }) {
       // console.log('email:', email)
@@ -501,6 +566,7 @@ export default {
     },
     async getToken({ commit }, { email, password }) {
       let mytoken
+      let ability
       let status = 200
       const data = {
         email,
@@ -508,7 +574,21 @@ export default {
       }
       await axios.post(apiToken, data).then(ret => {
         mytoken = ret.data.token
+        ability = ret.data.ability
+        if (ability.length === 0) {
+          ability = [
+            {
+              action: 'read',
+              subject: 'Client',
+            },
+            {
+              action: 'read',
+              subject: 'Auth',
+            },
+          ]
+        }
         commit('setToken', mytoken)
+        commit('setAbility', ability)
         commit('setUsername', email)
         commit('setPassword', password)
         // console.log(mytoken)
@@ -947,6 +1027,58 @@ export default {
         data = state.history_parcels
       }
       return data
+    },
+    async refreshStudents({ getters, commit }, { courseCode }) {
+      let data = ''
+      await axios.get(`${apiStudent}/${courseCode}`, {
+        // params: { ...queryObj },
+        headers: getters.get_headers,
+      }).then(ret => {
+        data = ret.data
+        commit('setStudents', data)
+        // if (queryObj.state === 'H') {
+        //   commit('setHistoryStudents', data)
+        // } else if (queryObj.state === 'C') {
+        //   commit('setStudents', data)
+        // }
+        console.log('axios get students')
+      })
+      return data
+    },
+    async students({ state, dispatch }, { courseCode, forceRefresh }) {
+      let data = ''
+      if (!state.students || forceRefresh) {
+        data = await dispatch('refreshStudents', { courseCode })
+      } else {
+        data = state.students
+        console.log('students exist')
+      }
+      return data
+    },
+    async fetchStudents({ dispatch }, queryParams) {
+      // eslint-disable-next-line object-curly-newline
+      const { studentState = null, courseCode = null, forceRefresh = true, q = '', perPage = 10, page = 1, sortBy = 'id', sortDesc = false } = queryParams
+      const data = await dispatch('students', { courseCode, forceRefresh })
+
+      console.log('studentState', studentState)
+      const queryLowered = q.toLowerCase()
+      const filteredData = data.filter(
+        student =>
+        /* eslint-disable operator-linebreak, implicit-arrow-linebreak */
+          (student.email?.toLowerCase().includes(queryLowered) ||
+        student.name?.toLowerCase().includes(queryLowered)) &&
+        student.status === (studentState || student.status),
+        //  &&
+        // student.state === (studentState || student.state),
+      )
+
+      const sortedData = filteredData.sort(sortCompare(sortBy))
+      if (sortDesc) sortedData.reverse()
+      // console.log(sortedData)
+      return {
+        students: paginateArray(sortedData, perPage, page),
+        total: filteredData.length,
+      }
     },
     async fetchParcels({ dispatch }, queryParams) {
       let data

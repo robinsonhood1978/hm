@@ -37,22 +37,6 @@
               class="d-inline-block mr-1"
               :placeholder="$t('Search...')"
             />
-            <v-select
-              v-model="statusFilter"
-              :dir="$store.state.appConfig.isRTL ? 'rtl' : 'ltr'"
-              :options="statusOptions"
-              :get-option-label="getLabel"
-              :reduce="status => status.value"
-              class="parcel-filter-select"
-              :placeholder="$t('Select Status')"
-              @input="setSelected"
-            >
-              <template #selected-option="{ label }">
-                <span class="text-truncate overflow-hidden">
-                  {{ label }}
-                </span>
-              </template>
-            </v-select>
           </div>
         </b-col>
       </b-row>
@@ -61,7 +45,7 @@
 
     <b-table
       ref="refInvoiceListTable"
-      :items="fetchParcels"
+      :items="fetchStudents"
       responsive
       :fields="tableColumns"
       primary-key="id"
@@ -86,64 +70,35 @@
       </template>
 
       <!-- Column: Id -->
-      <template #cell(id)="data">
+      <template #cell(email)="data">
         <b-link
-          v-if="!data.item.dform"
-          :to="{ name: 'ship2u-parcel-edit', params: { id: data.item.id } }"
+          :to="{ name: 'sdudent-detail', params: { email: data.item.email }}"
           class="font-weight-bold"
         >
-          #{{ data.value }}
-        </b-link>
-        <b-link
-          v-else
-          :to="{ name: 'ship2u-parcel-preview', params: { id: data.item.id }}"
-          class="font-weight-bold"
-        >
-          #{{ data.value }}
+          {{ data.value }}
         </b-link>
       </template>
 
-      <!-- Column: Images -->
-      <template #cell(images)="data">
-        <b-media vertical-align="center">
-          <template #aside>
-            <b-img
-              :src="data.item.images[0]?data.item.images[0].thumb:require('@/assets/images/flags/en.png')"
-              width="50"
-              rounded
-              height="35"
-            />
-          </template>
-        </b-media>
-      </template>
       <!-- Column: Title -->
-      <template #cell(title)="data">
+      <template #cell(name)="data">
         <b-media vertical-align="center">
           <span class="font-weight-bold d-block text-nowrap">
-            {{ data.item.title }}
+            {{ data.item.name }}
           </span>
         </b-media>
       </template>
 
       <!-- Column: Type -->
-      <template #cell(type)="data">
-        <template v-if="data.value === 0">
-          <b-badge
-            pill
-            variant="light-success"
-          >
-            Paid
-          </b-badge>
-        </template>
-        <template v-else>
+      <template #cell(first_name)="data">
+        <template>
           {{ data.value }}
         </template>
       </template>
 
       <!-- Column: Receive Time -->
-      <template #cell(receive_time)="data">
+      <template #cell(createdAt)="data">
         <span class="text-nowrap">
-          {{ $DateFormat(data.item.receive_time) }}
+          {{ $DateFormat(data.item.createdAt) }}
         </span>
       </template>
 
@@ -157,7 +112,7 @@
             icon="EyeIcon"
             size="16"
             class="mx-1"
-            @click="$router.push({ name: 'ship2u-parcel-preview', params: { id: data.item.id }})"
+            @click="$router.push({ name: 'sdudent-detail', params: { email: data.item.email }})"
           />
           <b-tooltip
             title="Preview Parcel"
@@ -166,7 +121,6 @@
 
           <!-- Dropdown -->
           <b-dropdown
-            v-if="!data.item.dform"
             variant="link"
             toggle-class="p-0"
             no-caret
@@ -180,9 +134,9 @@
                 class="align-middle text-body"
               />
             </template>
-            <b-dropdown-item :to="{ name: 'ship2u-parcel-edit', params: { id: data.item.id } }">
+            <b-dropdown-item :to="{ name: 'hm-interview-add', params: { email: data.item.email } }">
               <feather-icon icon="EditIcon" />
-              <span class="align-middle ml-50">Edit</span>
+              <span class="align-middle ml-50">面试评分</span>
             </b-dropdown-item>
           </b-dropdown>
         </div>
@@ -208,7 +162,7 @@
 
           <b-pagination
             v-model="currentPage"
-            :total-rows="totalParcels"
+            :total-rows="totalStudents"
             :per-page="perPage"
             first-number
             last-number
@@ -240,7 +194,7 @@
 
 <script>
 import {
-  BCard, BRow, BCol, BFormInput, BTable, BMedia, BImg, BLink,
+  BCard, BRow, BCol, BFormInput, BTable, BMedia, BLink,
   BDropdown, BDropdownItem, BPagination, BTooltip, BSpinner,
 } from 'bootstrap-vue'
 // import router from '@/router'
@@ -248,7 +202,7 @@ import { avatarText } from '@core/utils/filter'
 import vSelect from 'vue-select'
 import { computed } from '@vue/composition-api'
 import i18n from '@/libs/i18n'
-import parcelList from './parcelList'
+import studentList from './studentList'
 
 export default {
   components: {
@@ -259,7 +213,6 @@ export default {
     BFormInput,
     BTable,
     BMedia,
-    BImg,
     BLink,
     BDropdown,
     BDropdownItem,
@@ -267,6 +220,12 @@ export default {
     BTooltip,
 
     vSelect,
+  },
+  watch: {
+    // eslint-disable-next-line no-unused-vars
+    $route(to, from) {
+      this.$router.go(0)
+    },
   },
   mounted() {
     // console.log(111)
@@ -292,23 +251,22 @@ export default {
     }
     // Table Handlers
     const tableColumns = computed(() => [
-      { key: 'id', label: '#', sortable: true },
-      { key: 'images', label: trans('images'), sortable: false },
+      { key: 'email', label: trans('email'), sortable: true },
       // { key: 'parcelStatus', sortable: true },
-      { key: 'title', label: trans('title'), sortable: true },
-      { key: 'local_courier_name', label: trans('Local Courier Name'), sortable: true },
-      { key: 'local_courier_number', label: trans('Local Courier Number'), sortable: true },
-      { key: 'receive_time', label: trans('receive time'), sortable: true },
+      { key: 'name', label: trans('name'), sortable: true },
+      { key: 'first_name', label: trans('First Name'), sortable: true },
+      { key: 'last_name', label: trans('Last Name'), sortable: true },
+      { key: 'nick', label: trans('Nick'), sortable: true },
       // { key: 'balance', sortable: true },
       { key: 'actions', label: trans('actions') },
     ])
 
     const {
       // queryParams,
-      fetchParcels,
+      fetchStudents,
       perPage,
       currentPage,
-      totalParcels,
+      totalStudents,
       dataMeta,
       perPageOptions,
       searchQuery,
@@ -322,18 +280,18 @@ export default {
 
       resolveInvoiceStatusVariantAndIcon,
       resolveClientAvatarVariant,
-    } = parcelList()
+    } = studentList()
 
     // console.log(queryParams.value)
 
     // console.log(window.location.pathname)
     // console.log(router.currentRoute.name.split('_')[0])
     return {
-      fetchParcels,
+      fetchStudents,
       tableColumns,
       perPage,
       currentPage,
-      totalParcels,
+      totalStudents,
       dataMeta,
       perPageOptions,
       searchQuery,

@@ -6,7 +6,7 @@
         class="ml-25"
         href="/"
         target="_blank"
-      >Ship2u</b-link>
+      >CPF School</b-link>
       <span class="d-none d-sm-inline-block">, {{ $t('All rights Reserved') }}</span>
     </span>
 

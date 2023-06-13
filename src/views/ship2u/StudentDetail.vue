@@ -28,139 +28,6 @@
             </b-form-group>
           </b-col>
 
-          <b-col
-            v-show="moreInfo"
-            cols="12"
-          >
-            <b-alert
-              variant="primary"
-              show
-            >
-              <div class="alert-body">
-                <p>
-                  <a
-                    class="alert-link"
-                    :href="intro2"
-                    target="blank"
-                  >二期课程介绍及报名条件</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    href="https://kingdom123.org/cpfschool/zh-hans/node/16"
-                    target="blank"
-                  >课程奉献</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    :href="manualUrl"
-                    target="blank"
-                  >{{ $t('Download Lingxiu manual') }}</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    href="https://u.pcloud.link/publink/show?code=XZ88PbVZpOIdvWaBsXmhBlDYr1nuMzyDmsRk"
-                    target="blank"
-                  >{{ $t('Download Lingxiu Video') }}</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    href="https://u.pcloud.link/publink/show?code=XZN08hVZ89Ckpvm2hjBAgBMK1vH4PyShN3WV"
-                    target="blank"
-                  >{{ $t('Download Lingxiu Mp3') }}</a>
-                </p>
-              </div>
-            </b-alert>
-          </b-col>
-          <!-- modal -->
-          <b-modal
-            id="modal-scrollable"
-            v-model="showAlert"
-            scrollable
-            :title="$t('Admission requirements')"
-            :ok-title="$t('Confirmation')"
-            ok-only
-            @ok="showAlert=false"
-          >
-            <b-alert
-              variant="primary"
-              show
-            >
-              <div class="alert-body">
-                <p>
-                  <a
-                    class="alert-link"
-                    :href="intro2"
-                    target="blank"
-                  >二期课程介绍及报名条件</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    href="https://kingdom123.org/cpfschool/zh-hans/node/16"
-                    target="blank"
-                  >课程奉献</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    :href="manualUrl"
-                    target="blank"
-                  >{{ $t('Download Lingxiu manual') }}</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    href="https://transfer.pcloud.com/download.html?code=5ZY5PbVZ7KOIp7z8KmjZsPoUZpBK1cbmJlBkI2Hv4JRiNw7Niqkik"
-                    target="blank"
-                  >{{ $t('Download Lingxiu Video') }}</a>
-                </p>
-                <p>
-                  <a
-                    class="alert-link"
-                    href="https://u.pcloud.link/publink/show?code=XZN08hVZ89Ckpvm2hjBAgBMK1vH4PyShN3WV"
-                    target="blank"
-                  >{{ $t('Download Lingxiu Mp3') }}</a>
-                </p>
-              </div>
-            </b-alert>
-            <p>
-              (1) 信主至少一年以上，但择优录取。
-            </p>
-            <p>
-              (2) 有稳定的教会生活，有参与最起码的小组或团契事奉。
-            </p>
-            <p>
-              (3) 提供所属教会或团契小组的基本信息，如网站和/或负责人。
-            </p>
-            <p>
-              (4) 提供半页篇幅的个人信主见证，或事奉简历。
-            </p>
-            <p>
-              (5) 报名参加本课程的目的或希望达到的目标，从何处得知本课程信息。
-            </p>
-            <p>
-              (6) 提供主内推荐人的姓名及联络方式。
-            </p>
-            <p>
-              (7) 需通过本课程教学事务团队的视频面试。
-            </p>
-            <p>
-              (8) 课程成本费300美金，建议自由奉献。
-            </p>
-            <p>
-              (9) 需要至少读过一遍“灵修操练手册”。*
-            </p>
-            <p>
-              (10) 需要听过至少一遍“灵修与明白神旨意速成班十二课”。*
-            </p>
-            <p>
-              (11) 报名参加本课程，要保证完成80%的课时。
-            </p>
-          </b-modal>
           <!-- username -->
           <b-col
 
@@ -338,7 +205,7 @@
                 <b-input-group class="input-group-merge">
                   <b-form-input
                     id="example-input"
-                    v-model="birthday"
+                    v-model="profile.birthday"
                     type="text"
                     placeholder="YYYY-MM-DD"
                     autocomplete="off"
@@ -346,7 +213,7 @@
                   />
                   <b-input-group-append>
                     <b-form-datepicker
-                      v-model="birthday"
+                      v-model="profile.birthday"
                       show-decade-nav
                       button-only
                       button-variant="outline-primary"
@@ -653,7 +520,7 @@
                 <b-input-group class="input-group-merge">
                   <b-form-input
                     id="baptism"
-                    v-model="baptism_date"
+                    v-model="profile.baptism_date"
                     type="text"
                     placeholder="YYYY-MM-DD"
                     autocomplete="off"
@@ -661,7 +528,7 @@
                   />
                   <b-input-group-append>
                     <b-form-datepicker
-                      v-model="baptism_date"
+                      v-model="profile.baptism_date"
                       show-decade-nav
                       button-only
                       button-variant="outline-primary"
@@ -1111,24 +978,6 @@
           </b-col>
 
           <!-- submit and reset -->
-          <b-col cols="12">
-            <b-button
-              v-ripple.400="'rgba(255, 255, 255, 0.15)'"
-              type="submit"
-              variant="primary"
-              class="mr-1"
-            >
-              {{ $t('Submit') }}
-            </b-button>
-            <b-button
-              v-ripple.400="'rgba(186, 191, 199, 0.15)'"
-              type="button"
-              variant="outline-secondary"
-              @click="Save"
-            >
-              {{ $t('Save') }}
-            </b-button>
-          </b-col>
         </b-row>
       </b-form>
     </validation-observer>
@@ -1150,7 +999,7 @@ import {
   BFormGroup,
   BFormInput,
   BForm,
-  BButton,
+  // BButton,
   BInputGroup,
   BInputGroupPrepend,
   BInputGroupAppend,
@@ -1176,7 +1025,7 @@ export default {
     BFormInput,
     BForm,
     // BFormText,
-    BButton,
+    // BButton,
     // VueSelectMultiple,
     vSelect,
     BFormDatepicker,
@@ -1190,10 +1039,13 @@ export default {
   },
   data() {
     return {
+      profile: null,
       uploadedfile: '',
       file: null,
-      moreInfo: false,
+      moreInfo: true,
       showAlert: false,
+      Selected_HollyBible: '是',
+      Selected_PastorAgree: '是',
       mobile: '',
       birthday: '',
       church_experience: ' ',
@@ -1261,9 +1113,6 @@ export default {
     }
   },
   computed: {
-    intro2() {
-      return `${this.$store.state.ship2u.apiHost}/public/intro2.pdf`
-    },
     manualUrl() {
       return `${this.$store.state.ship2u.apiHost}/public/lxsc.pdf`
     },
@@ -1281,47 +1130,39 @@ export default {
     validation() {
       return this.mobile.length > 8 && this.mobile.length < 16
     },
-    profile() {
-      const pf = {
-        courses: [],
-        gender: { title: '男' },
-        education: { title: '本科' },
-        profession: { title: '建筑与工程' },
-        video_times: { title: '0次' },
-        book_times: { title: '0次' },
-        know_channel: { title: '牧者同工朋友推荐' },
-        status: 'W',
-        viewed_bible: '是',
-        agreed_pastor: '是',
-      }
-      const { profile } = this.$store.state.ship2u.userProfile
+    // profile() {
+    //   const pf = {
+    //     courses: [],
+    //     gender: { title: '男' },
+    //     education: { title: '本科' },
+    //     profession: { title: '建筑与工程' },
+    //     video_times: { title: '0次' },
+    //     book_times: { title: '0次' },
+    //     know_channel: { title: '牧者同工朋友推荐' },
+    //   }
+    //   const { profile } = this.$store.state.ship2u.userProfile
 
-      return { ...pf, ...profile }
-    },
+    //   return { ...pf, ...profile }
+    // },
   },
   mounted() {
-    // this.church_experience = this.profile.church_experience
-    // this.personal_testimony = this.profile.personal_testimony
-    // this.ideas_needs = this.profile.ideas_needs
-    this.birthday = this.profile.birthday
-    this.baptism_date = this.profile.baptism_date
-    if (this.profile?.recommendation_letter) { this.uploadedfile = `${this.$store.state.ship2u.apiHost}/public/${this.profile.recommendation_letter}` }
-    this.showMoreInfo()
-  },
-  methods: {
-    showMoreInfo() {
-      this.moreInfo = false
-      this.showAlert = false
-      this.profile.courses.forEach(e => {
-        if (e.type === 1) {
-          this.moreInfo = true
-          if (!this.edit) {
-            this.showAlert = true
-          }
+    this.$store
+      .dispatch('ship2u/studentDetail', {
+        email: this.$router.currentRoute.params.email,
+      })
+      .then(res => {
+        this.profile = res
+        if (!this.profile.viewed_bible) {
+          this.profile.viewed_bible = '是'
+          this.profile.agreed_pastor = '是'
         }
       })
-    },
-
+      .catch(ex => {
+        console.log(ex)
+      })
+    if (this.profile?.recommendation_letter) { this.uploadedfile = `${this.$store.state.ship2u.apiHost}/public/${this.profile.recommendation_letter}` }
+  },
+  methods: {
     onContext(ctx) {
       // The date formatted in the locale, or the `label-no-date-selected` string
       this.formatted = ctx.selectedFormatted
@@ -1342,8 +1183,8 @@ export default {
           // church_experience: this.church_experience,
           // personal_testimony: this.personal_testimony,
           // ideas_needs: this.ideas_needs,
-          birthday: this.birthday,
-          baptism_date: this.baptism_date,
+          // birthday: this.birthday,
+          // baptism_date: this.baptism_date,
           recommendation_letter: recommendationLetter,
         })
         .then(() => {
@@ -1385,8 +1226,8 @@ export default {
               // church_experience: this.church_experience,
               // personal_testimony: this.personal_testimony,
               // ideas_needs: this.ideas_needs,
-              birthday: this.birthday,
-              baptism_date: this.baptism_date,
+              // birthday: this.birthday,
+              // baptism_date: this.baptism_date,
               recommendation_letter: recommendationLetter,
             })
             .then(() => {

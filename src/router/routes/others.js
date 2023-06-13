@@ -59,10 +59,29 @@ export default [
       pageTitle: 'Personal Information',
       breadcrumb: [
         {
-          text: 'Account',
+          text: 'Course',
         },
         {
           text: 'Personal Information',
+          active: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/student_detail/:email',
+    name: 'sdudent-detail',
+    component: () => import('@/views/ship2u/StudentDetail.vue'),
+    meta: {
+      resource: 'Teacher',
+      action: 'read',
+      pageTitle: 'Student Information',
+      breadcrumb: [
+        {
+          text: 'Courses Management',
+        },
+        {
+          text: 'Student Information',
           active: true,
         },
       ],
@@ -78,7 +97,7 @@ export default [
       pageTitle: 'Self Evaluation',
       breadcrumb: [
         {
-          text: 'Account',
+          text: 'Course',
         },
         {
           text: 'Self Evaluation',
@@ -126,171 +145,66 @@ export default [
     },
   },
   {
-    path: '/ship2u/parcel/preview/:id',
-    name: 'ship2u-parcel-preview',
-    component: () => import('@/views/ship2u/parcel/parcel-preview/ParcelPreview.vue'),
+    path: '/waiting_student/:code',
+    name: 'waiting_student',
+    component: () => import('@/views/ship2u/student/student-list/StudentList.vue'),
     meta: {
-      resource: 'Client',
+      resource: 'Teacher',
       action: 'read',
-      pageTitle: 'Parcel Detail',
+      pageTitle: 'Waiting List',
       breadcrumb: [
         {
-          text: 'Parcels',
+          text: 'Courses Management',
         },
         {
-          text: 'Parcel Detail',
+          text: '2022-10',
+        },
+        {
+          text: 'Waiting List',
           active: true,
         },
       ],
     },
   },
   {
-    path: '/ship2u/parcel/add/',
-    name: 'ship2u-parcel-add',
-    component: () => import('@/views/ship2u/parcel/parcel-add/ParcelAdd.vue'),
+    path: '/success_student/:code',
+    name: 'success_student',
+    component: () => import('@/views/ship2u/student/student-list/StudentList.vue'),
     meta: {
-      resource: 'Client',
+      resource: 'Teacher',
       action: 'read',
-      pageTitle: 'Parcel Add',
+      pageTitle: 'Success List',
       breadcrumb: [
         {
-          text: 'Parcels',
+          text: 'Courses Management',
         },
         {
-          text: 'Parcel Add',
+          text: '2022-10',
+        },
+        {
+          text: 'Success List',
           active: true,
         },
       ],
     },
   },
   {
-    path: '/ship2u/parcel/edit/:id',
-    name: 'ship2u-parcel-edit',
-    component: () => import('@/views/ship2u/parcel/parcel-edit/ParcelEdit.vue'),
+    path: '/fail_student/:code',
+    name: 'fail_student',
+    component: () => import('@/views/ship2u/student/student-list/StudentList.vue'),
     meta: {
-      resource: 'Client',
+      resource: 'Teacher',
       action: 'read',
-      pageTitle: 'Parcel Edit',
+      pageTitle: 'Fail List',
       breadcrumb: [
         {
-          text: 'Parcels',
+          text: 'Courses Management',
         },
         {
-          text: 'Parcel Edit',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/draft_parcels',
-    name: 'draft_parcels',
-    component: () => import('@/views/ship2u/parcel/parcel-list/DraftList.vue'),
-    meta: {
-      resource: 'Client',
-      action: 'read',
-      pageTitle: 'Draft Parcels',
-      breadcrumb: [
-        {
-          text: 'Parcels',
+          text: '2022-10',
         },
         {
-          text: 'Draft Parcels',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/incomplete_parcels',
-    name: 'incomplete_parcels',
-    component: () => import('@/views/ship2u/parcel/parcel-list/IncompleteList.vue'),
-    meta: {
-      resource: 'Client',
-      action: 'read',
-      pageTitle: 'Incomplete Parcels',
-      breadcrumb: [
-        {
-          text: 'Parcels',
-        },
-        {
-          text: 'Incomplete Parcels',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/waiting_parcels',
-    name: 'waiting_parcels',
-    component: () => import('@/views/ship2u/parcel/parcel-list/WaitingList.vue'),
-    meta: {
-      resource: 'Client',
-      action: 'read',
-      pageTitle: 'Waiting for Delivery',
-      breadcrumb: [
-        {
-          text: 'Parcels',
-        },
-        {
-          text: 'Waiting for Delivery',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/processing_parcels',
-    name: 'processing_parcels',
-    component: () => import('@/views/ship2u/parcel/parcel-list/ProcessingList.vue'),
-    meta: {
-      resource: 'Client',
-      action: 'read',
-      pageTitle: 'Processing Parcels',
-      breadcrumb: [
-        {
-          text: 'Parcels',
-        },
-        {
-          text: 'Processing Parcels',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/out_parcels',
-    name: 'out_parcels',
-    component: () => import('@/views/ship2u/parcel/parcel-list/OutList.vue'),
-    meta: {
-      resource: 'Client',
-      action: 'read',
-      pageTitle: 'Outbound Parcels',
-      breadcrumb: [
-        {
-          text: 'Parcels',
-        },
-        {
-          text: 'Outbound Parcels',
-          active: true,
-        },
-      ],
-    },
-  },
-  {
-    path: '/history_parcels',
-    name: 'history_parcels',
-    component: () => import('@/views/ship2u/parcel/parcel-list/HistoryList.vue'),
-    meta: {
-      resource: 'Client',
-      action: 'read',
-      pageTitle: 'History',
-      breadcrumb: [
-        {
-          text: 'Parcels',
-        },
-        {
-          text: 'History',
+          text: 'Fail List',
           active: true,
         },
       ],
@@ -563,19 +477,38 @@ export default [
     },
   },
   {
-    path: '/order_add',
-    name: 'ship2u-order-add',
-    component: () => import('@/views/ship2u/order/order-add/OrderAdd.vue'),
+    path: '/exam_add',
+    name: 'hm-exam-add',
+    component: () => import('@/views/hm/exam/exam-add/ExamAdd.vue'),
     meta: {
       resource: 'Client',
       action: 'read',
-      pageTitle: 'Add Order',
+      pageTitle: 'Exam',
       breadcrumb: [
         {
-          text: 'Account',
+          text: 'Course',
         },
         {
-          text: 'Add Order',
+          text: 'Exam',
+          active: true,
+        },
+      ],
+    },
+  },
+  {
+    path: '/interview_add',
+    name: 'hm-interview-add',
+    component: () => import('@/views/hm/interview/InterviewAdd.vue'),
+    meta: {
+      resource: 'Client',
+      action: 'read',
+      pageTitle: 'Interview',
+      breadcrumb: [
+        {
+          text: 'Course',
+        },
+        {
+          text: 'Interview',
           active: true,
         },
       ],

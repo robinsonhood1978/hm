@@ -9,7 +9,7 @@ export const $themeBreakpoints = {}
 // APP CONFIG
 export const $themeConfig = {
   app: {
-    appName: 'Ship2u',
+    appName: 'CPF School',
     // eslint-disable-next-line global-require
     appLogoImage: require('@/assets/images/logo/logo.png'),
   },

@@ -62,7 +62,7 @@ export default {
       {
         locale: 'zh_CN',
         img: require('@/assets/images/flags/cn.png'),
-        name: 'China',
+        name: 'Chinese',
       },
       {
         locale: 'en',

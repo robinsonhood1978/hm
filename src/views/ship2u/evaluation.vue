@@ -188,6 +188,30 @@
             </b-form-group>
           </b-col>
 
+          <b-col cols="12">
+            <b-form-group
+              :label="$t('Summary')"
+              label-for="vi-churchservice"
+            >
+              <template v-slot:label>
+                {{ $t('Summary') }} <span class="text-danger">*</span>
+              </template>
+              <validation-provider
+                #default="{ errors }"
+                :name="$t('Summary')"
+                rules="required"
+              >
+                <b-form-textarea
+                  v-model="evaluation.summary"
+                  :placeholder="$t('Summary Demo')"
+                  rows="6"
+                  class="char-textarea"
+                />
+                <small class="text-danger">{{ errors[0] }}</small>
+              </validation-provider>
+            </b-form-group>
+          </b-col>
+
           <!-- submit and reset -->
           <b-col cols="12">
             <b-button
@@ -221,6 +245,7 @@ import {
   BFormGroup,
   BForm,
   BButton,
+  BFormTextarea,
 } from 'bootstrap-vue'
 import Ripple from 'vue-ripple-directive'
 import { useToast } from 'vue-toastification/composition'
@@ -233,6 +258,7 @@ export default {
     BRow,
     BCol,
     BFormGroup,
+    BFormTextarea,
     BForm,
     // BFormText,
     BButton,

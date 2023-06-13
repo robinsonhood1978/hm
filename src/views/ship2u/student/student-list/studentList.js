@@ -6,14 +6,14 @@ import router from '@/router'
 import { useToast } from 'vue-toastification/composition'
 import ToastificationContent from '@core/components/toastification/ToastificationContent.vue'
 
-export default function parcelList() {
+export default function studentList() {
   // Use toast
   const toast = useToast()
 
   const refInvoiceListTable = ref(null)
 
   const perPage = ref(10)
-  const totalParcels = ref(0)
+  const totalStudents = ref(0)
   const currentPage = ref(1)
   const perPageOptions = [2, 5, 10, 25, 50, 100]
   const searchQuery = ref('')
@@ -22,65 +22,29 @@ export default function parcelList() {
   const statusFilter = ref(null)
 
   const queryParams = computed(() => {
+    console.log('code', router.currentRoute.params.code)
     const type = router.currentRoute.name.split('_')[0]
-    // console.log(type)
-    let parcelState
-    let filed
-    let unsent
-    let obj
+    const courseCode = router.currentRoute.params.code
+    let studentState
 
     switch (type) {
-      case 'draft':
-        parcelState = 'D'
-        obj = {
-          parcelState,
-        }
-        break
-      case 'incomplete':
-        parcelState = 'P'
-        filed = 0
-        unsent = 1
-        obj = {
-          parcelState,
-          filed,
-          unsent,
-        }
-        break
       case 'waiting':
-        parcelState = 'P'
-        // filed = 1
-        unsent = 1
-        obj = {
-          parcelState,
-          filed,
-          unsent,
-        }
+        studentState = 'W'
         break
-      case 'processing':
-        parcelState = 'P'
-        unsent = 0
-        obj = {
-          parcelState,
-          unsent,
-        }
+      case 'success':
+        studentState = 'S'
         break
-      case 'out':
-        parcelState = 'T'
-        unsent = 0
-        obj = {
-          parcelState,
-          unsent,
-        }
-        break
-      case 'history':
-        parcelState = 'H'
-        obj = {
-          parcelState,
-        }
+      case 'fail':
+        studentState = 'F'
         break
       default:
-        obj = {}
+        studentState = 'W'
     }
+    const obj = {
+      studentState,
+      courseCode,
+    }
+    console.log('obj', obj)
     return obj
   })
 
@@ -89,7 +53,7 @@ export default function parcelList() {
     return {
       from: perPage.value * (currentPage.value - 1) + (localItemsCount ? 1 : 0),
       to: perPage.value * (currentPage.value - 1) + localItemsCount,
-      of: totalParcels.value,
+      of: totalStudents.value,
     }
   })
 
@@ -101,10 +65,10 @@ export default function parcelList() {
     refetchData()
   })
   // ?state=P&filed=1&unsent=1&count=10
-  const fetchParcels = (ctx, callback) => {
+  const fetchStudents = (ctx, callback) => {
     // console.log(queryParams.value)
     store
-      .dispatch('ship2u/fetchParcels', {
+      .dispatch('ship2u/fetchStudents', {
         ...queryParams.value,
         forceRefresh: false,
         q: searchQuery.value,
@@ -116,9 +80,9 @@ export default function parcelList() {
       })
       .then(response => {
         console.log('robin adding:', response)
-        const { parcels, total } = response
-        callback(parcels)
-        totalParcels.value = total
+        const { students, total } = response
+        callback(students)
+        totalStudents.value = total
       })
       .catch(() => {
         toast({
@@ -158,10 +122,10 @@ export default function parcelList() {
 
   return {
     // queryParams,
-    fetchParcels,
+    fetchStudents,
     perPage,
     currentPage,
-    totalParcels,
+    totalStudents,
     dataMeta,
     perPageOptions,
     searchQuery,

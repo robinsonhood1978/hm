@@ -242,7 +242,7 @@ export default {
         {
           locale: 'zh_CN',
           img: require('@/assets/images/flags/cn.png'),
-          name: 'China',
+          name: 'Chinese',
         },
         {
           locale: 'en',
@@ -288,7 +288,7 @@ export default {
             password: this.password,
           })
             .then(response => {
-              console.log(response)
+              // console.log(response)
               const { status, userData } = response
               if (status === 200) {
                 sessionStorage.setItem('userData', JSON.stringify(userData))

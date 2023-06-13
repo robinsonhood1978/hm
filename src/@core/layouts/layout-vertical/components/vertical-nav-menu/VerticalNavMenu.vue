@@ -110,7 +110,7 @@ export default {
   },
   data() {
     return {
-      appName: 'Ship2u',
+      appName: 'CPF School',
       // eslint-disable-next-line global-require
       appLogoImage: require('@/assets/images/logo/logo.png'),
     }
@@ -182,18 +182,6 @@ export default {
           resource: 'Client',
           children: [
             {
-              title: 'Personal',
-              route: 'ship2u-personal',
-              action: 'read',
-              resource: 'Client',
-            },
-            {
-              title: 'Self Evaluation',
-              route: 'ship2u-evaluation',
-              action: 'read',
-              resource: 'Client',
-            },
-            {
               title: 'Password',
               route: 'ship2u-modify-pwd',
               action: 'read',
@@ -213,50 +201,80 @@ export default {
             // },
           ],
         },
-        // {
-        //   title: 'Parcels',
-        //   icon: 'ArchiveIcon',
-        //   // tag: pWaiting,
-        //   // tagVariant: 'light-warning',
-        //   action: 'read',
-        //   resource: 'Client',
-        //   children: [
-        //     // {
-        //     //   title: 'Draft',
-        //     //   route: 'draft_parcels',
-        //     //   tag: store.getters['ship2u/parcels']({ parcelState: 'D' }),
-        //     //   action: 'read',
-        //     //   resource: 'Client',
-        //     // },
-        //     {
-        //       title: 'In Warehouse',
-        //       route: 'waiting_parcels',
-        //       tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 1 }),
-        //       action: 'read',
-        //       resource: 'Client',
-        //     },
-        //     {
-        //       title: 'Processing',
-        //       route: 'processing_parcels',
-        //       tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 0 }),
-        //       action: 'read',
-        //       resource: 'Client',
-        //     },
-        //     {
-        //       title: 'Outbound',
-        //       route: 'out_parcels',
-        //       tag: store.getters['ship2u/parcels']({ parcelState: 'T', unsent: 0 }),
-        //       action: 'read',
-        //       resource: 'Client',
-        //     },
-        //     {
-        //       title: 'History',
-        //       route: 'history_parcels',
-        //       action: 'read',
-        //       resource: 'Client',
-        //     },
-        //   ],
-        // },
+        {
+          title: 'Course',
+          icon: 'CalendarIcon',
+          tagVariant: 'light-warning',
+          action: 'read',
+          resource: 'Client',
+          children: [
+            {
+              title: 'Personal',
+              route: 'ship2u-personal',
+              action: 'read',
+              resource: 'Client',
+            },
+            {
+              title: 'Self Evaluation',
+              route: 'ship2u-evaluation',
+              action: 'read',
+              resource: 'Client',
+            },
+            {
+              title: 'Exam',
+              route: 'hm-exam-add',
+              action: 'read',
+              resource: 'Client',
+            },
+          ],
+        },
+        {
+          title: 'Courses Management',
+          icon: 'ArchiveIcon',
+          action: 'read',
+          resource: 'Teacher',
+          children: [
+            {
+              title: '2022-10',
+              action: 'read',
+              resource: 'Teacher',
+              children: [
+                {
+                  title: 'Waiting List',
+                  route: { name: 'waiting_student', params: { code: 'zhujian202210' } },
+                  action: 'read',
+                  resource: 'Teacher',
+                },
+                {
+                  title: 'Success List',
+                  route: { name: 'success_student', params: { code: 'zhujian202210' } },
+                  action: 'read',
+                  resource: 'Teacher',
+                },
+                {
+                  title: 'Fail List',
+                  route: { name: 'fail_student', params: { code: 'zhujian202210' } },
+                  action: 'read',
+                  resource: 'Teacher',
+                },
+              ],
+            },
+            // {
+            //   title: 'Processing',
+            //   route: 'processing_parcels',
+            //   tag: store.getters['ship2u/parcels']({ parcelState: 'P', unsent: 0 }),
+            //   action: 'read',
+            //   resource: 'Teacher',
+            // },
+            // {
+            //   title: 'Outbound',
+            //   route: 'out_parcels',
+            //   tag: store.getters['ship2u/parcels']({ parcelState: 'T', unsent: 0 }),
+            //   action: 'read',
+            //   resource: 'Teacher',
+            // },
+          ],
+        },
         // {
         //   title: 'Freight Orders',
         //   icon: 'CheckSquareIcon',
